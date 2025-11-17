@@ -1,0 +1,6 @@
+- [ ] Update React import to include useRef
+- [ ] Add audioRef and logContainerRef in CoreInterfacePanel
+- [ ] Add new useEffect for auto-scroll and audio play
+- [ ] Update log container div with ref and class changes
+- [ ] Add audio element after command input section
+- [ ] Add CSS styles for .log-container in globals.css
