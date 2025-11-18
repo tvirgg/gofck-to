@@ -5,21 +5,30 @@
   --foreground: #171717;
 
   /* Космический фон и градиенты по ТЗ */
-  --cosmic-background: radial-gradient(circle at 20% 20%, #22114a 0, rgba(5, 2, 15, 0.2) 35%)
-      , radial-gradient(circle at 80% 0%, #2a1f6b 0, rgba(10, 4, 26, 0.1) 30%)
-      , radial-gradient(circle at 10% 80%, #2a617b 0, rgba(5, 2, 15, 0.05) 35%)
-      , radial-gradient(circle at 90% 90%, #9333ea 0, rgba(5, 2, 15, 0.05) 30%);
+  --cosmic-background:
+      radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.15) 0, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.15) 0, transparent 40%),
+      radial-gradient(circle at 50% 50%, #020617 0%, #05020f 100%);
+  
   --cosmic-base: #05020f;
+  
+  /* Сетка для ретро-футуризма */
+  --grid-pattern: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 
   /* Синаптический поток — основной акцентный градиент */
-  --synaptic-flow-gradient: linear-gradient(135deg, #00f2ff 0%, #ff00c1 50%, #00f2ff 100%);
+  --synaptic-flow-gradient: linear-gradient(135deg, #22d3ee 0%, #e879f9 50%, #818cf8 100%);
 
   /* Градиент тепловой карты для данных */
-  --heatmap-gradient: linear-gradient(90deg, #1d4ed8 0%, #22c55e 50%, #eab308 100%);
+  --heatmap-gradient: linear-gradient(90deg, #3b82f6 0%, #10b981 50%, #f59e0b 100%);
+
+  --neon-cyan: #22d3ee;
+  --neon-pink: #e879f9;
+  --neon-violet: #8b5cf6;
 
   /* Тени и обводки */
-  --panel-bg: rgba(6, 6, 18, 0.9);
-  --panel-border-muted: rgba(63, 63, 94, 0.9);
+  --panel-bg: rgba(10, 10, 25, 0.65);
+  --panel-border-muted: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
@@ -40,12 +49,21 @@ body {
   background-color: var(--cosmic-base);
   background-image: var(--cosmic-background);
   background-attachment: fixed;
-  background-size: 140% 140%;
   color: var(--foreground);
   font-family: var(--font-mono), system-ui, -apple-system, BlinkMacSystemFont,
     "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
     monospace;
-  animation: cosmic-drift 40s ease-in-out infinite alternate;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: var(--grid-pattern);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.4;
 }
 
 /* === Ambient animations === */
@@ -83,24 +101,25 @@ body {
   border-radius: 1.5rem;
   padding: 1.5rem;
   overflow: hidden;
-  background:
-    linear-gradient(#05020f, #05020f) padding-box,
-    var(--panel-border-muted) border-box;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
   border: 1px solid transparent;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  /* Тонкая обводка через маску */
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .panel--accent {
   background:
-    linear-gradient(rgba(5, 2, 15, 0.98), rgba(6, 7, 24, 0.96)) padding-box,
+    linear-gradient(rgba(5, 10, 30, 0.85), rgba(5, 5, 20, 0.9)) padding-box,
     var(--synaptic-flow-gradient) border-box;
+  border: 1px solid transparent;
   animation: panel-glow 16s ease-in-out infinite alternate;
 }
 
 .panel--subtle {
-  background:
-    linear-gradient(rgba(5, 2, 15, 0.96), rgba(5, 5, 20, 0.96)) padding-box,
-    linear-gradient(135deg, #1e293b, #020617) border-box;
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* === Таб-навигация === */
@@ -108,7 +127,7 @@ body {
   border-radius: 9999px;
   padding: 0.35rem 0.9rem;
   border: 1px solid rgba(148, 163, 184, 0.4);
-  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.25), transparent 55%);
+  background: rgba(0, 0, 0, 0.4);
   transition: background 150ms ease, border-color 150ms ease, color 150ms ease,
     box-shadow 150ms ease, transform 120ms ease;
 }
@@ -116,9 +135,9 @@ body {
 .pill-tab--active {
   border-color: transparent;
   background:
-    linear-gradient(#020617, #020617) padding-box,
+    linear-gradient(rgba(20,20,40,0.9), rgba(20,20,40,0.9)) padding-box,
     var(--synaptic-flow-gradient) border-box;
-  box-shadow: 0 0 18px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
   transform: translateY(-1px);
 }
 
@@ -160,18 +179,6 @@ body {
   50%,
   100% {
     opacity: 0;
-  }
-}
-
-@keyframes cosmic-drift {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 50% 50%;
-  }
-  100% {
-    background-position: 100% 0%;
   }
 }
 

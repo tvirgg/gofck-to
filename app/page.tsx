@@ -9,12 +9,17 @@ import {
   CartesianGrid,
   Line,
   LineChart,
+  ComposedChart,
+  Scatter,
   RadialBar,
   RadialBarChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import {
   BarChart,
@@ -53,11 +58,27 @@ const synapticFlowSeries = [
 ];
 
 const cognitiveLoadSeries = [
-  { s: "CPU", v: 82, f: 100 },
-  { s: "Memory", v: 64, f: 100 },
+  { s: "CPU", v: 78, f: 100 },
+  { s: "RAM", v: 64, f: 100 },
   { s: "Bandwidth", v: 78, f: 100 },
   { s: "Disk I/O", v: 45, f: 100 },
   { s: "GPU", v: 91, f: 100 },
+];
+
+const networkThroughputSeries = [
+  { t: "00", rx: 40, tx: 24 },
+  { t: "04", rx: 30, tx: 13 },
+  { t: "08", rx: 20, tx: 58 },
+  { t: "12", rx: 27, tx: 39 },
+  { t: "16", rx: 18, tx: 48 },
+  { t: "20", rx: 23, tx: 38 },
+];
+
+const tokenDistributionData = [
+  { name: "Treasury", value: 400 },
+  { name: "Staking", value: 300 },
+  { name: "Public", value: 300 },
+  { name: "Team", value: 100 },
 ];
 
 const ForkRadial = [
@@ -137,7 +158,7 @@ export default function Home() {
         {/* === HEADER / TOP BAR === */}
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-2xl bg-black/80 shadow-[0_0_32px_rgba(0,0,0,0.85)] backdrop-blur">
+            <div className="relative h-12 w-12 overflow-hidden rounded-xl border border-white/10 bg-black/50 shadow-[0_0_32px_rgba(34,211,238,0.15)] backdrop-blur-md">
               <Image
                 src="/logo.png"
                 alt="Brain Fork"
@@ -158,7 +179,7 @@ export default function Home() {
 
           <div className="flex items-center gap-3 text-xs sm:text-sm">
             <div className="hidden items-center gap-2 rounded-full border border-zinc-700/70 bg-black/60 px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-zinc-400 sm:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(34,197,94,0.35)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
               <span className="animate-softPulse">Core Status: Online</span>
             </div>
 
@@ -281,6 +302,8 @@ function CoreInterfacePanel() {
   const [ignitionData, setIgnitionData] = useState(ignitionSeries);
   const [flowData, setFlowData] = useState(synapticFlowSeries);
   const [loadData, setLoadData] = useState(cognitiveLoadSeries);
+  const [throughputData, setThroughputData] = useState(networkThroughputSeries);
+  const [distData, setDistData] = useState(tokenDistributionData);
   const [command, setCommand] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const logContainerRef = useRef<HTMLDivElement | null>(null);
@@ -328,6 +351,15 @@ function CoreInterfacePanel() {
         prev.map((item) => ({
           ...item,
           v: Math.max(30, Math.min(100, item.v + (Math.random() - 0.45) * 5)),
+        })),
+      );
+
+      // Throughput chart
+      setThroughputData((prev) => 
+        prev.map((item) => ({
+          ...item,
+          rx: Math.abs(item.rx + (Math.random() - 0.5) * 10),
+          tx: Math.abs(item.tx + (Math.random() - 0.5) * 10),
         })),
       );
     }, 2500);
@@ -440,21 +472,21 @@ function CoreInterfacePanel() {
             {/* Row 1: Status Pills */}
             <div className="space-y-1">
               <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">Core Status</div>
-              <div className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-1 text-[11px] text-emerald-300">
+              <div className="inline-flex items-center gap-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 px-2 py-1 text-[11px] text-cyan-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
                 <span className="font-semibold">Online</span>
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">Synaptic Flow</div>
-              <div className="inline-flex items-center gap-1 rounded-full bg-sky-500/20 px-2 py-1 text-[11px] text-sky-300">
+              <div className="inline-flex items-center gap-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 px-2 py-1 text-[11px] text-fuchsia-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
                 <span className="font-semibold">Stable</span>
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">Fork State</div>
-              <div className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 px-2 py-1 text-[11px] text-amber-300">
+              <div className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-1 text-[11px] text-amber-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
                 <span className="font-semibold">Heating</span>
               </div>
