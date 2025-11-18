@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Brain Fork — Neural IDO Launch Terminal",
-  description:
-    "Brain Fork — a cyberpunk terminal interface for neural IDO launches, $FORK analytics, staking and the Cognitive Matrix. Tabs: Core Interface, The Fork, Synapse Staking, Cognitive Matrix.",
+  title: "Brain on Fork — Neural IDO Launch Terminal",
+  description: 
+    "Brain on Fork — a cyberpunk terminal interface for neural IDO launches, $FORK analytics, staking and the Cognitive Matrix. Tabs: Core Interface, The Fork, Synapse Staking, Cognitive Matrix.",
 };
 
 export default function RootLayout({
